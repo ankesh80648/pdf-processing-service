@@ -10,7 +10,7 @@ This is a simple REST service for uploading and processing PDF files. The servic
 
 ## Installation
 
-1. Clone the repository:
+Clone the repository:
    ```sh
    git clone https://github.com/<your_username>/<repository>.git
    cd <repository>
