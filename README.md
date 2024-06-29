@@ -1,41 +1,96 @@
-# Slim Framework 4 Skeleton Application
+# PDF Processing Service
 
-[![Coverage Status](https://coveralls.io/repos/github/slimphp/Slim-Skeleton/badge.svg?branch=master)](https://coveralls.io/github/slimphp/Slim-Skeleton?branch=master)
+This is a simple REST service for uploading and processing PDF files. The service extracts text from uploaded PDF files, counts the number of words, and returns the word count along with a unique identifier.
 
-Use this skeleton application to quickly setup and start working on a new Slim Framework 4 application. This application uses the latest Slim 4 with Slim PSR-7 implementation and PHP-DI container implementation. It also uses the Monolog logger.
+## Prerequisites
 
-This skeleton application was built for Composer. This makes setting up a new Slim Framework application quick and easy.
+- PHP 7.4 or higher
+- Composer
+- Git
 
-## Install the Application
+## Installation
 
-Run this command from the directory in which you want to install your new Slim Framework application. You will require PHP 7.4 or newer.
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/<your_username>/<repository>.git
+   cd <repository>
+Install dependencies using Composer:
 
-```bash
-composer create-project slim/slim-skeleton [my-app-name]
-```
+sh
+Copy code
+composer install
+Start the Slim application:
 
-Replace `[my-app-name]` with the desired directory name for your new application. You'll want to:
+sh
+Copy code
+php -S localhost:8080 -t public
+Usage
+Upload a PDF File
+sh
+Copy code
+curl -X POST -F "pdf=@C:/path/to/your/file.pdf" http://localhost:8080/upload
+Response:
 
-* Point your virtual host document root to your new application's `public/` directory.
-* Ensure `logs/` is web writable.
+json
+Copy code
+{"file_id":"<file_id>"}
+Process the Uploaded PDF File
+sh
+Copy code
+curl -X POST http://localhost:8080/process/<file_id>
+Response:
 
-To run the application in development, you can run these commands 
+json
+Copy code
+{"file_id":"<file_id>","word_count":<word_count>}
+Retrieve the Processing Results
+sh
+Copy code
+curl -X GET http://localhost:8080/result/<file_id>
+Response:
 
-```bash
-cd [my-app-name]
-composer start
-```
+json
+Copy code
+{
+  "id":"<file_id>",
+  "path":"<file_path>",
+  "word_count":<word_count>
+}
+Example
+Upload a PDF file:
 
-Or you can use `docker-compose` to run the app with `docker`, so you can run these commands:
-```bash
-cd [my-app-name]
-docker-compose up -d
-```
-After that, open `http://localhost:8080` in your browser.
+sh
+Copy code
+curl -X POST -F "pdf=@C:/Users/admin/Desktop/Books2.pdf" http://localhost:8080/upload
+Response:
 
-Run this command in the application directory to run the test suite
+json
+Copy code
+{"file_id":"66804449e867b"}
+Process the uploaded PDF file:
 
-```bash
-composer test
-```
+sh
+Copy code
+curl -X POST http://localhost:8080/process/66804449e867b
+Response:
+
+json
+Copy code
+{"file_id":"66804449e867b","word_count":95}
+Retrieve the processing results:
+
+sh
+Copy code
+curl -X GET http://localhost:8080/result/66804449e867b
+Response:
+
+json
+Copy code
+{
+  "id":"66804449e867b",
+  "path":"C:\\xampp\\php\\pdf_service\\app\\/../uploads\\Books2.pdf",
+  "word_count":95
+}
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
